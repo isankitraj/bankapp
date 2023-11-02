@@ -1,0 +1,38 @@
+# bankapp-deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bankapp-deployment
+spec:
+  replicas: 2  # You can adjust the number of replicas as needed
+  selector:
+    matchLabels:
+      app: bankapp
+  template:
+    metadata:
+      labels:
+        app: bankapp
+    spec:
+      containers:
+        - name: bankapp
+          image: isankitraj/bankapp:1.0
+          ports:
+            - containerPort: 80
+---
+# bankapp-service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bankapp-service
+spec:
+  selector:
+    app: bankapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+---
+
